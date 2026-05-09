@@ -8,4 +8,3 @@ bool compare (int a, int b)
 
 // compare를 쉽게 생각하려면
 // compare(a, b) == true이면 a는 b보다 뒤로 가라
-
