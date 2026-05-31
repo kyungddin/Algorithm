@@ -15,10 +15,8 @@ string solution(string s, int n) {
                 c = c + n;
                 if (c > 'Z') c = c - 26;
                 c = tolower(c);
-
-                string tmp = "";
-                tmp += c;
-                answer += tmp;
+                
+                answer += c;
             }
 
             else if (c >= 'A' && c <= 'Z')
@@ -26,9 +24,7 @@ string solution(string s, int n) {
                 c = c + n;
                 if (c > 'Z') c = c - 26;
 
-                string tmp = "";
-                tmp += c;
-                answer += tmp;
+                answer += c;
             }
             else if (c = ' ')
             {
