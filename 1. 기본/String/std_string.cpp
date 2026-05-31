@@ -88,3 +88,6 @@ int main()
 
     return 0;
 }
+
+
+// erase와 substr 더 연습
