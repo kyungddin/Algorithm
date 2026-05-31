@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>std::string 코딩테스트 총정리</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+  :root {
+    --bg: #0f1117;
+    --bg2: #161b27;
+    --bg3: #1e2535;
+    --border: #2a3347;
+    --border2: #374258;
+    --text: #e2e8f0;
+    --muted: #7d8fa8;
+    --code: #7dd3fc;
+    --accent: #3b82f6;
+    --green: #4ade80;
+    --amber: #fbbf24;
+    --red: #f87171;
+    --purple: #c084fc;
+    --teal: #2dd4bf;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 40px 24px 80px;
+    min-height: 100vh;
+  }
+
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  /* ── Header ── */
+  .header { margin-bottom: 36px; }
+  .header h1 {
+    font-size: 26px; font-weight: 700;
+    color: #fff;
+    letter-spacing: -.3px;
+    margin-bottom: 6px;
+  }
+  .header h1 span { color: var(--accent); }
+  .header p { color: var(--muted); font-size: 13px; }
+
+  /* ── Section ── */
+  .section { margin-bottom: 32px; }
+
+  .section-header {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px;
+  }
+  .section-header h2 {
+    font-size: 12px; font-weight: 500;
+    letter-spacing: .1em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .section-header::after {
+    content: ''; flex: 1;
+    height: 0.5px; background: var(--border);
+  }
+
+  /* ── Table ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    font-size: 13px;
+  }
+
+  thead tr {
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border2);
+  }
+  thead th {
+    padding: 9px 14px;
+    text-align: left;
+    font-size: 11px; font-weight: 500;
+    letter-spacing: .06em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  thead th:first-child { width: 38%; }
+  thead th:nth-child(2) { width: 38%; }
+  thead th:last-child { width: 24%; text-align: center; }
+
+  tbody tr {
+    border-bottom: 0.5px solid var(--border);
+    transition: background .12s;
+  }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--bg3); }
+
+  td {
+    padding: 8px 14px;
+    vertical-align: middle;
+  }
+  td:first-child {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    color: var(--code);
+  }
+  td:nth-child(2) {
+    color: var(--text);
+    font-size: 13px;
+  }
+  td:last-child { text-align: center; }
+
+  /* ── Badges ── */
+  .badge {
+    display: inline-block;
+    font-size: 10px; font-weight: 500;
+    padding: 2px 8px; border-radius: 99px;
+    white-space: nowrap; letter-spacing: .02em;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  .b-red    { background: rgba(248,113,113,.15); color: #fca5a5; border: 1px solid rgba(248,113,113,.25); }
+  .b-amber  { background: rgba(251,191,36,.12);  color: #fcd34d; border: 1px solid rgba(251,191,36,.22); }
+  .b-green  { background: rgba(74,222,128,.12);  color: #86efac; border: 1px solid rgba(74,222,128,.22); }
+  .b-purple { background: rgba(192,132,252,.12); color: #d8b4fe; border: 1px solid rgba(192,132,252,.22); }
+  .b-teal   { background: rgba(45,212,191,.12);  color: #5eead4; border: 1px solid rgba(45,212,191,.22); }
+
+  /* ── Tip boxes ── */
+  .tip {
+    margin-top: 8px;
+    padding: 10px 14px;
+    border-left: 3px solid var(--amber);
+    background: rgba(251,191,36,.06);
+    border-radius: 0 8px 8px 0;
+    font-size: 12.5px;
+    color: #cbd5e1;
+    line-height: 1.7;
+  }
+  .tip code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--code);
+    background: rgba(125,211,252,.08);
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+  .tip.info  { border-color: var(--teal);   background: rgba(45,212,191,.06); }
+  .tip.warn  { border-color: #f87171;        background: rgba(248,113,113,.06); }
+
+  /* ── Two-column layout for smaller sections ── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* ── Footer ── */
+  .footer {
+    margin-top: 48px; padding-top: 24px;
+    border-top: 1px solid var(--border);
+    color: var(--muted); font-size: 12px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1><span>std::string</span> 코딩테스트 총정리</h1>
+    <p>C++17 기준 · 코테에서 자주 쓰는 메서드 한눈에 보기</p>
+  </div>
+
+  <!-- ① 선언 / 입출력 -->
+  <div class="section">
+    <div class="section-header"><h2>선언 / 입출력</h2></div>
+    <table>
+      <thead><tr><th>코드</th><th>설명</th><th>태그</th></tr></thead>
+      <tbody>
+        <tr><td>string s;</td><td>빈 문자열 선언</td><td></td></tr>
+        <tr><td>string s = "hello";</td><td>리터럴 초기화</td><td></td></tr>
+        <tr><td>string s(5, 'a');</td><td>"aaaaa" 초기화</td><td></td></tr>
+        <tr><td>string s(t, 2, 4);</td><td>t의 인덱스 2부터 4개 복사</td><td></td></tr>
+        <tr><td>cin >> s</td><td>공백 전까지 입력</td><td></td></tr>
+        <tr><td>getline(cin, s)</td><td>줄 전체 입력</td><td><span class="badge b-amber">주의</span></td></tr>
+        <tr><td>getline(cin, s, ',')</td><td>쉼표 기준 입력</td><td></td></tr>
+        <tr><td>cout &lt;&lt; s</td><td>출력</td><td></td></tr>
+      </tbody>
+    </table>
+    <div class="tip warn">⚠️ <code>cin &gt;&gt; n</code> 후 <code>getline</code> 사용 시 개행 문자가 버퍼에 남음 → <code>cin.ignore();</code> 한 줄 추가 필수</div>
+  </div>
+
+  <!-- ② 길이 / 비교 -->
+  <div class="section">
+    <div class="section-header"><h2>길이 / 비교</h2></div>
+    <table>
+      <thead><tr><th>코드</th><th>설명</th><th>태그</th></tr></thead>
+      <tbody>
+        <tr><td>s.size()</td><td>문자열 길이 반환 (= .length())</td><td></td></tr>
+        <tr><td>s.empty()</td><td>비어있으면 true</td><td></td></tr>
+        <tr><td>s.capacity()</td><td>현재 할당 용량</td><td></td></tr>
+        <tr><td>s.reserve(n)</td><td>용량 n으로 미리 확보</td><td><span class="badge b-teal">최적화</span></td></tr>
+        <tr><td>s == t</td><td>동등 비교</td><td></td></tr>
+        <tr><td>s &lt; t</td><td>사전순 비교 (== &lt; &gt; 모두 가능)</td><td></td></tr>
+        <tr><td>s.compare(t)</td><td>음수/0/양수 반환</td><td></td></tr>
+        <tr><td>s.compare(2, 3, t)</td><td>s[2..4] vs t 부분 비교</td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ③ 검색 -->
+  <div class="section">
+    <div class="section-header"><h2>검색 (find)</h2></div>
+    <table>
+      <thead><tr><th>코드</th><th>설명</th><th>태그</th></tr></thead>
+      <tbody>
+        <tr><td>s.find("ab")</td><td>첫 등장 위치, 없으면 npos</td><td><span class="badge b-red">npos 체크</span></td></tr>
+        <tr><td>s.find("ab", 3)</td><td>인덱스 3부터 탐색</td><td></td></tr>
+        <tr><td>s.rfind("ab")</td><td>뒤에서부터 탐색</td><td></td></tr>
+        <tr><td>s.find_first_of("aeiou")</td><td>문자셋 중 첫 등장</td><td></td></tr>
+        <tr><td>s.find_last_of("aeiou")</td><td>문자셋 중 마지막 등장</td><td></td></tr>
+        <tr><td>s.find_first_not_of("abc")</td><td>문자셋 외 첫 등장</td><td></td></tr>
+      </tbody>
+    </table>
+    <div class="tip warn">⚠️ <code>find</code>의 반환형은 <code>size_t</code> (unsigned). 반드시 <code>if (pos != string::npos)</code>로 체크 — 음수 비교가 의도대로 작동 안 함</div>
+  </div>
+
+  <!-- ④ 자르기 / 삽입 / 삭제 -->
+  <div class="section">
+    <div class="section-header"><h2>자르기 / 삽입 / 삭제</h2></div>
+    <table>
+      <thead><tr><th>코드</th><th>설명</th><th>태그</th></tr></thead>
+      <tbody>
+        <tr><td>s.substr(2, 4)</td><td>인덱스 2부터 길이 4</td><td></td></tr>
+        <tr><td>s.substr(3)</td><td>인덱스 3부터 끝까지</td><td></td></tr>
+        <tr><td>s.erase(2, 3)</td><td>인덱스 2부터 3개 삭제</td><td></td></tr>
+        <tr><td>s.erase(it)</td><td>이터레이터 위치 삭제</td><td></td></tr>
+        <tr><td>s.insert(2, "XY")</td><td>인덱스 2 앞에 "XY" 삽입</td><td></td></tr>
+        <tr><td>s.insert(it, 'c')</td><td>이터레이터 위치에 문자 삽입</td><td></td></tr>
+        <tr><td>s.replace(1, 3, "Z")</td><td>인덱스 1부터 3개를 "Z"로 교체</td><td></td></tr>
+        <tr><td>s.clear()</td><td>내용 비우기 (capacity 유지)</td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ⑤ 이어붙이기 / 문자 접근 -->
+  <div class="two-col">
+    <div class="section">
+      <div class="section-header"><h2>이어붙이기</h2></div>
+      <table>
+        <thead><tr><th>코드</th><th>설명</th><th>태그</th></tr></thead>
+        <tbody>
+          <tr><td>s += "abc"</td><td>문자열 이어붙이기</td><td></td></tr>
+          <tr><td>s += 'c'</td><td>문자 이어붙이기</td><td></td></tr>
+          <tr><td>s.push_back('c')</td><td>끝에 문자 추가</td><td></td></tr>
+          <tr><td>s.pop_back()</td><td>끝 문자 제거</td><td></td></tr>
+          <tr><td>s.append("abc")</td><td>+=와 동일, 체이닝 가능</td><td></td></tr>
+          <tr><td>s + t</td><td>새 문자열 반환 (루프 내 지양)</td><td><span class="badge b-red">느림</span></td></tr>
+        </tbody>
+      </table>
+      <div class="tip">💡 루프 안에서 문자열 조립 시 <code>+=</code> 또는 <code>stringstream</code> 사용. <code>+</code> 반복은 O(n²)</div>
+    </div>
+
+    <div class="section">
+      <div class="section-header"><h2>문자 접근 / 순회</h2></div>
+      <table>
+        <thead><tr><th>코드</th><th>설명</th><th>태그</th></tr></thead>
+        <tbody>
+          <tr><td>s[i]</td><td>i번째 문자 (범위 미체크)</td><td></td></tr>
+          <tr><td>s.at(i)</td><td>범위 초과 시 예외 발생</td><td></td></tr>
+          <tr><td>s.front()</td><td>첫 번째 문자</td><td></td></tr>
+          <tr><td>s.back()</td><td>마지막 문자</td><td></td></tr>
+          <tr><td>for (char c : s)</td><td>범위 기반 for</td><td></td></tr>
+          <tr><td>s.c_str()</td><td>const char* 변환</td><td><span class="badge b-purple">C API</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ⑥ 숫자 변환 -->
+  <div class="section">
+    <div class="section-header"><h2>숫자 ↔ 문자열 변환</h2></div>
+    <table>
+      <thead><tr><th>코드</th><th>설명</th><th>태그</th></tr></thead>
+      <tbody>
+        <tr><td>to_string(42)</td><td>int → string</td><td><span class="badge b-green">C++11</span></td></tr>
+        <tr><td>to_string(3.14)</td><td>double → string</td><td></td></tr>
+        <tr><td>stoi("123")</td><td>string → int</td><td></td></tr>
+        <tr><td>stol / stoll("123")</td><td>string → long / long long</td><td></td></tr>
+        <tr><td>stof / stod("3.14")</td><td>string → float / double</td><td></td></tr>
+        <tr><td>stoi("FF", 0, 16)</td><td>16진수 파싱 → 255</td><td><span class="badge b-teal">유용</span></td></tr>
+        <tr><td>stoi("0b1010", 0, 2)</td><td>2진수 파싱 → 10</td><td></td></tr>
+        <tr><td>s[i] - '0'</td><td>숫자 문자 → int (빠른 변환)</td><td><span class="badge b-amber">자주 씀</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ⑦ 알고리즘 조합 -->
+  <div class="section">
+    <div class="section-header"><h2>알고리즘 조합 (&lt;algorithm&gt; 필요)</h2></div>
+    <table>
+      <thead><tr><th>코드</th><th>설명</th><th>태그</th></tr></thead>
+      <tbody>
+        <tr><td>sort(s.begin(), s.end())</td><td>문자 정렬 (오름차순)</td><td></td></tr>
+        <tr><td>reverse(s.begin(), s.end())</td><td>문자열 뒤집기</td><td></td></tr>
+        <tr><td>sort(...); unique(...)</td><td>중복 제거 (정렬 먼저!)</td><td><span class="badge b-amber">순서 주의</span></td></tr>
+        <tr><td>count(s.begin(), s.end(), 'a')</td><td>특정 문자 개수</td><td></td></tr>
+        <tr><td>transform(..., ::tolower)</td><td>소문자로 변환</td><td></td></tr>
+        <tr><td>transform(..., ::toupper)</td><td>대문자로 변환</td><td></td></tr>
+        <tr><td>next_permutation(s.begin(), s.end())</td><td>다음 순열로 변경</td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ⑧ 스트림 / 파싱 -->
+  <div class="section">
+    <div class="section-header"><h2>스트림 / 파싱 (&lt;sstream&gt;)</h2></div>
+    <table>
+      <thead><tr><th>코드</th><th>설명</th><th>태그</th></tr></thead>
+      <tbody>
+        <tr><td>istringstream ss(s);</td><td>문자열 → 스트림</td><td></td></tr>
+        <tr><td>ss >> token</td><td>공백 기준 토큰 분리</td><td><span class="badge b-green">split 대용</span></td></tr>
+        <tr><td>getline(ss, token, ',')</td><td>구분자 기준 토큰 분리</td><td></td></tr>
+        <tr><td>stringstream ss; ss &lt;&lt; 42;</td><td>숫자 등 스트림에 추가</td><td></td></tr>
+        <tr><td>ss.str()</td><td>스트림 → string 추출</td><td></td></tr>
+      </tbody>
+    </table>
+    <div class="tip info">💡 C++에는 <code>split</code>이 없음. 구분자 분리는 <code>getline(ss, token, delim)</code> 루프 또는 <code>find</code> + <code>substr</code> 루프로 직접 구현</div>
+  </div>
+
+  <!-- ⑨ 자주 실수하는 것들 -->
+  <div class="section">
+    <div class="section-header"><h2>자주 실수하는 것들</h2></div>
+    <table>
+      <thead><tr><th>실수</th><th>올바른 방법</th><th>태그</th></tr></thead>
+      <tbody>
+        <tr><td>find 결과를 int로 받기</td><td>size_t 또는 auto + npos 체크</td><td><span class="badge b-red">버그</span></td></tr>
+        <tr><td>cin 후 getline</td><td>cin.ignore() 먼저 호출</td><td><span class="badge b-red">버그</span></td></tr>
+        <tr><td>루프 안 s = s + t</td><td>s += t 또는 stringstream</td><td><span class="badge b-amber">느림</span></td></tr>
+        <tr><td>함수에 string 값 전달</td><td>const string&amp; 로 받기</td><td><span class="badge b-amber">비효율</span></td></tr>
+        <tr><td>s.size() - 1 (비어있을 때)</td><td>empty() 먼저 체크 (언더플로우)</td><td><span class="badge b-red">버그</span></td></tr>
+        <tr><td>sort 없이 unique 사용</td><td>sort → unique → erase 순서</td><td><span class="badge b-amber">주의</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    <span>std::string 코딩테스트 총정리 · C++17</span>
+    <span>generated by Claude</span>
+  </div>
+
+</div>
+</body>
+</html>
