@@ -4,29 +4,30 @@
 
 using namespace std;
 
-string solution(string s, int n) {
+#define ALPHA_SIZE 26
+
+string solution(string sentence, int num) {
     string answer = "";
     
-        for (auto c : s)
+        for (auto ch : sentence)
         {
-            if (c >= 'a' && c<= 'z')
+            if (ch >= 'a' && ch <= 'z')
             {
-                c = toupper(c);
-                c = c + n;
-                if (c > 'Z') c = c - 26;
-                c = tolower(c);
+                ch = toupper(ch) + num;
+                if (ch > 'Z') ch -= ALPHA_SIZE; // Circular Shift
+                ch = tolower(ch);
                 
-                answer += c;
+                answer += ch;
             }
 
-            else if (c >= 'A' && c <= 'Z')
+            else if (ch >= 'A' && ch <= 'Z')
             {
-                c = c + n;
-                if (c > 'Z') c = c - 26;
+                ch = ch + num;
+                if (ch > 'Z') ch -= ALPHA_SIZE;
 
-                answer += c;
+                answer += ch;
             }
-            else if (c = ' ')
+            else
             {
                 answer += " ";
             }
