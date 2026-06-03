@@ -1,4 +1,3 @@
-#include <iostream>
 #include <string>
 #include <vector>
 #include <unordered_map>
@@ -6,64 +5,66 @@
 
 using namespace std;
 
-// ================= Case =================
-// Enter, Leave, Change
-// Muzi 들어옴 -> Prodo 들어옴
-// Prodo 들어옴
-// Muzi 나감 -> Prodo 나감
-// Prodo 들어옴
-// ================= Case =================
-
 vector<string> solution(vector<string> record) {
     vector<string> answer;
-    
     unordered_map<string, string> hashMap;
     
-    for (auto str : record)
+    for (auto message : record)
     {
-        vector<string> tmpStr;
-        istringstream ss(str);
+        istringstream ss(message);
         string token;
+        vector<string> parsedMessage;
         
         while (getline(ss, token, ' '))
         {
-            tmpStr.push_back(token);
+            parsedMessage.push_back(token);
         }
         
-        string userID = tmpStr[1];
+        string result;
+        string userName;
+
+        string command = parsedMessage[0];
+        string userID = parsedMessage[1];
         
-        if (tmpStr[0] == "Enter")
+        if (command == "Enter")
         {
-            hashMap[userID] = tmpStr[2];
+            userName = parsedMessage[2];
+            hashMap[userID] = userName;
             
-            userID += "님이 들어왔습니다.";
-            answer.push_back(userID);
+            result = userID + "님이 들어왔습니다.";
+            answer.push_back(result);
         }
-        else if (tmpStr[0] == "Leave")
+        else if (command == "Leave")
         {
-            userID += "님이 나갔습니다.";
-            answer.push_back(userID);
+            result = userID + "님이 나갔습니다.";
+            answer.push_back(result);
         }
-        else if (tmpStr[0] == "Change")
+        else if (command == "Change")
         {
-            hashMap[userID] = tmpStr[2];
+            userName = parsedMessage[2];
+            hashMap[userID] = userName;
         }
     }
     
     for (auto& str : answer)
     {
         int idx = 0;
+
         for (int i=0; i < str.size(); i++)
         {
-            if(str[i] >='0' && str[i] <= 'z') continue;
+            if( isdigit(str[i]) ) continue;
+
+            else if( isalpha(str[i]) ) continue;
+
             else
             {
                 idx = i;
                 break;
             }
         }
-        string ID = str.substr(0, idx);
-        str.replace(0, idx, hashMap[ID]);
+
+        string userID = str.substr(0, idx);
+        str.replace(0, idx, hashMap[userID]);
     }
     
     return answer;
