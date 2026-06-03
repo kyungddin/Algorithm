@@ -1,30 +1,17 @@
 #include <string>
 #include <vector>
-#include <iostream>
 
 using namespace std;
 
-bool solution(string s) {
-    bool answer = true;
+bool solution(string sentence) {
+    int size = sentence.size();
     
-    if (s.size() !=4 && s.size() != 6)
-    {
-        answer = false;
-        return answer;
-    }
+    if (size !=4 && size != 6) 
+        return false;
     
-    else
-    {
-        for (auto c : s)
-        {
-            if (c >= 'A' && c <= 'z')
-            {
-                answer = false;
-                return answer;
-            }
-            else continue;
-        }
-    }
-    
-    return answer;
+    for (auto ch : sentence)
+        if ( !isdigit(ch) ) 
+            return false;        
+
+    return true;
 }
