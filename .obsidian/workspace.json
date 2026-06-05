@@ -10,17 +10,15 @@
           {
             "id": "30e4201a7dccc49c",
             "type": "leaf",
-            "pinned": true,
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Step/1. 기본/String/ProblemList.md",
+                "file": "WrongNote/프로그래머스_주식가격.md",
                 "mode": "source",
                 "source": false
               },
-              "pinned": true,
               "icon": "lucide-file",
-              "title": "ProblemList"
+              "title": "프로그래머스_주식가격"
             }
           }
         ]
@@ -199,9 +197,11 @@
   },
   "active": "30e4201a7dccc49c",
   "lastOpenFiles": [
+    "WrongNote/프로그래머스_기능개발.md",
+    "WrongNote/프로그래머스_주식가격.md",
+    "Step/1. 기본/String/ProblemList.md",
     "WrongNote/프로그래머스_압축.md",
     "WrongNote/프로그래머스_오픈채팅방.md",
-    "Step/1. 기본/String/ProblemList.md",
     "WrongNote/프로그래머스_신규 아이디 추천.md",
     "WrongNote/프로그래머스_없는 숫자 더하기.md",
     "WrongNote/프로그래머스_시저 암호.md",
