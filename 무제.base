@@ -1,0 +1,6 @@
+filters:
+  and:
+    - file.ext == "cpp"
+views:
+  - type: table
+    name: 표
