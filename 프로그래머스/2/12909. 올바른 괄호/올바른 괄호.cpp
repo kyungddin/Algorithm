@@ -1,28 +1,23 @@
-#include<string>
-#include <iostream>
-#include <queue>
+#include <string>
+#include <stack>
 
 using namespace std;
 
-deque<char> q;
-
 bool solution(string s)
 {
-    bool answer = false;
-    
-    for(int i=0; i<s.size(); i++){
-        q.push_back(s[i]);
-        if(q.size()==1) continue;
-        
-        int k = q.size()-1;
-        
-        if(q[k] == ')' && q[k-1] == '(') {
-            q.pop_back();
-            q.pop_back();
+    stack<char> parentStack;
+
+    for (char ch : s)
+    {
+        if(ch == ')')
+        {
+            if(parentStack.size() == 0) return false;
+            if(parentStack.top() == '(') parentStack.pop();
         }
+        else
+            parentStack.push(ch);
     }
     
-    if(q.empty()) answer = true;
-
-    return answer;
+    if (parentStack.size() != 0 ) return false;
+    return true;
 }
