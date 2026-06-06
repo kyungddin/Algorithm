@@ -1,36 +1,48 @@
 #include <string>
 #include <vector>
 #include <stack>
-#include <iostream>
 
 using namespace std;
 
 vector<int> solution(vector<int> prices) {
     vector<int> answer;
-    stack<int> idxStack;
-    int size = prices.size();
-    int topIdx = 0;
+    stack<int> stackIdx;
     
+    const int size = prices.size();
     answer.resize(size);
-    idxStack.push(0);
     
-    for(int idx=1; idx < size; idx++)
+    for (int idx = 0; idx < size; idx++)
     {
-        while(!idxStack.empty() && (prices[idxStack.top()] > prices[idx]))
+        while (!stackIdx.empty() && (prices[stackIdx.top()] > prices[idx]))
         {
-            topIdx = idxStack.top();
-            idxStack.pop();
-            answer[topIdx] = idx - topIdx;
+           int topIdx = stackIdx.top();
+           stackIdx.pop();
+           answer[topIdx] = idx - topIdx;
         }
-        idxStack.push(idx);
+        stackIdx.push(idx);
     }
     
-    const int MAX_VAL = size - 1;
-    while (idxStack.size())
+    int num = size - 1;
+    
+    while (stackIdx.size())
     {
-        answer[idxStack.top()] = MAX_VAL - idxStack.top();
-        idxStack.pop();
+        answer[stackIdx.top()] = num - stackIdx.top();
+        stackIdx.pop();
     }
+    
+    /*
+    for price in prices:
+            if (stack != stack.empty and prices[stack.top] > price):
+                while (! (stack.top > price)):
+                    topIdx = stack.top
+                    stack.pop
+                    answer[topIdx] = topIdx - price.idx
+            else:
+                stack.push(price.idx)
+    num = prices.size - 1
+    for idx in stack:
+        answer[idx] = num - idx
+    */
     
     return answer;
 }
