@@ -1,25 +1,28 @@
 #include <string>
 #include <vector>
-#include <unordered_map>
+#include <unordered_set>
 
 using namespace std;
 
 bool solution(vector<string> phone_book) {
-    
-    // Variable Setting
     bool answer = true;
-    unordered_map<string, int> map;
+    unordered_set<string> numberSet;
     
-    // Initialization
-    for(int i=0; i<phone_book.size(); i++){
-        map[phone_book[i]]++;
+    for (auto number : phone_book)
+    {
+        numberSet.insert(number);
     }
     
-    // Main Logic
-    for(int i=0; i<phone_book.size(); i++){
-        for(int j=1; j<phone_book[i].size(); j++){
-            string tmp = phone_book[i].substr(0, j);
-            if(map[tmp] == true) answer = false;
+    for (auto number : phone_book)
+    {
+        for (int i=1; i<number.size(); i++)
+        {
+            string substr = number.substr(0, i);
+            if(numberSet.find(substr) != numberSet.end())
+            {
+                answer = false;
+                break;
+            }
         }
     }
     
