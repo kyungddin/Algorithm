@@ -1,8 +1,18 @@
 #include <vector>
-#include <algorithm>
-std::vector<int> solution(std::vector<int> arr) 
+#include <iostream>
+#include <stack>
+
+using namespace std;
+
+vector<int> solution(vector<int> arr) 
 {
-    arr.erase(std::unique(arr.begin(), arr.end()),arr.end());
-    std::vector<int> answer =  arr;
+    vector<int> answer;
+
+    for (auto n : arr)
+    {
+        if(answer.empty() || answer.back() != n)
+            answer.push_back(n);
+    }
+
     return answer;
 }
