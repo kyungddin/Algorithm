@@ -4,24 +4,27 @@
 
 using namespace std;
 
-bool compare(string a, string b){
-    return a+b > b+a;
-}
-
 string solution(vector<int> numbers) {
     string answer = "";
-    vector<string> tmp;
     
-    for(int i=0; i<numbers.size(); i++){
-        tmp.push_back(to_string(numbers[i]));
+    vector<string> vecString;
+    
+    for (auto num : numbers)
+    {
+        vecString.push_back(to_string(num));    
     }
     
-    sort(tmp.begin(), tmp.end(), compare);
+    sort(vecString.begin(),
+         vecString.end(),
+         [](const string& a, const string& b)
+         {return a+b > b+a ;}
+        );
+        
+    if(vecString[0] == "0") return "0";
     
-    if (tmp.at(0) == "0") return "0";
-    
-    for(int i=0; i<tmp.size(); i++){
-        answer += tmp[i];
+    for (auto str : vecString)
+    {
+        answer += str;
     }
     
     return answer;
