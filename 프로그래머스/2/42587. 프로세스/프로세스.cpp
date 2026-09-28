@@ -1,39 +1,39 @@
 #include <string>
 #include <vector>
+#include <queue>
 #include <deque>
 
 using namespace std;
 
 int solution(vector<int> priorities, int location) {
     int answer = 0;
+    priority_queue<int, vector<int>> pq(priorities.begin(), priorities.end());
     
-    // 1. Init
-    deque<pair<int, int>> pDeque;
+    deque<pair<int, int>> roundQueue;
     
-    for (int idx = 0; idx < priorities.size(); idx++)
+    for (int i = 0 ; i < priorities.size() ; i++)
     {
-        pDeque.push_back(make_pair(priorities[idx], idx));
+        roundQueue.push_back(make_pair(priorities[i], i));
     }
-    
-    bool flag = false;
-    while(pDeque.size())
+
+    while(!roundQueue.empty())
     {
-        pair<int, int> priority = pDeque.front();
-        pDeque.pop_front();
-        for(int idx = 0; idx < pDeque.size(); idx++)
-        {
-            if(priority.first < pDeque[idx].first)
-            {
-                pDeque.push_back(priority);
-                flag = true;
-                break;
-            }
-        }
-        if (flag == false)
+        if(roundQueue.front().first >= pq.top())
         {
             answer++;
-            if(priority.second == location) return answer;
+            if(roundQueue.front().second == location) return answer;
+            else 
+            {
+                roundQueue.pop_front();
+                pq.pop();
+            }
         }
-        flag = false;
+        else
+        {
+            roundQueue.push_back(roundQueue.front());
+            roundQueue.pop_front();
+        }
     }
+    
+    return answer;
 }
