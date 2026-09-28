@@ -6,39 +6,42 @@ using namespace std;
 
 int solution(int bridge_length, int weight, vector<int> truck_weights) {
     int answer = 0;
-    
-    queue<int> queueTruck;
-    deque<pair<int, int>> bridge;
-    queue<int> resultTruck;
-    
     int size = truck_weights.size();
+    int count = 0;
+    int total_weight = 0;
     
-    for(int i = 0; i <size; i++)
+    deque<int> truck_waits;
+    
+    for(auto truck : truck_weights)
     {
-        queueTruck.push(truck_weights[i]);
+        truck_waits.push_back(truck);
     }
     
-    int weightSum = 0;
-    while(resultTruck.size() != size)
+    deque<pair<int, int>> bridge;
+    
+    while(count != size)
     {
+        // 1. 시간올리기
         answer++;
-        for(int i=0 ; i < bridge.size(); i++) // 초 추가하기
+        for (int i = 0 ; i < bridge.size(); i++)
         {
             bridge[i].second++;
         }
         
-        if(!bridge.empty() && bridge.front().second > bridge_length) // 다리에서 빼내는 로직
+        // 2. 건넜는지 체크하기
+        if (!bridge.empty() && bridge.front().second >= bridge_length)
         {
-            resultTruck.push(bridge.front().first);
-            weightSum -= bridge.front().first;
+            total_weight -= bridge.front().first;
             bridge.pop_front();
+            count++;
         }
         
-        if(!queueTruck.empty() && weightSum + queueTruck.front() <= weight &&  bridge.size() <= bridge_length) // 다리에 넣는 로직
+        // 3. 새 트럭 올리기
+        if (!truck_waits.empty() && total_weight + truck_waits.front() <= weight)
         {
-            bridge.push_back(make_pair(queueTruck.front(), 1));
-            weightSum += queueTruck.front();
-            queueTruck.pop();   
+            bridge.push_back(make_pair(truck_waits.front(), 0));
+            total_weight += truck_waits.front();
+            truck_waits.pop_front();
         }
     }
     
