@@ -5,18 +5,19 @@ using namespace std;
 
 bool solution(string s)
 {
-    bool answer = false;
-    stack<char> stackString;
-    
-    stackString.push(s[0]);
-    
-    for (int i = 1 ; i < s.size() ; i++)
+    stack<char> parentStack;
+
+    for (char ch : s)
     {
-        if(!stackString.empty() && s[i] == ')' && stackString.top() == '(') stackString.pop();
-        else stackString.push(s[i]);
+        if(ch == ')')
+        {
+            if(parentStack.size() == 0) return false;
+            if(parentStack.top() == '(') parentStack.pop();
+        }
+        else
+            parentStack.push(ch);
     }
     
-    if(stackString.empty()) answer = true;
-
-    return answer;
+    if (parentStack.size() != 0 ) return false;
+    return true;
 }
