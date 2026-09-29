@@ -1,0 +1,37 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int n, m;
+vector<vector<int>> graph;
+vector<vector<bool>> visited;
+
+int dr[4] = {-1, 1, 0, 0};
+int dc[4] = {0, 0, -1, 1};
+
+void dfs(int row, int col) {
+    visited[row][col] = true;
+
+    for (int direction = 0; direction < 4; ++direction) {
+        int nextRow = row + dr[direction];
+        int nextCol = col + dc[direction];
+
+        // 범위 확인 (매우 중요)
+        if (nextRow < 0 || nextRow >= n ||
+            nextCol < 0 || nextCol >= m) {
+            continue;
+        }
+
+        // 갈 수 없는 칸
+        if (graph[nextRow][nextCol] == 0) {
+            continue;
+        }
+
+        // 이미 방문한 칸
+        if (visited[nextRow][nextCol]) {
+            continue;
+        }
+
+        dfs(nextRow, nextCol);
+    }
+}
