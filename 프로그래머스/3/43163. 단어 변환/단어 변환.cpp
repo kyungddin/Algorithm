@@ -9,11 +9,6 @@ using namespace std;
 void DFS(string begin, string target, vector<string>& words, map<string, bool>& visited, int count, int& answer)
 {
     // 1. 종료 조건 (최단 거리도 보장할 것)
-    if (count >= answer) 
-    {
-        return;
-    }
-    
     if (begin == target)
     { 
         answer = min(answer, count);
