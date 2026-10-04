@@ -1,53 +1,60 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <queue>
 #include <cmath>
-#include <climits>
 
 using namespace std;
 
-void DFS(string begin, string target, vector<string>& words, map<string, bool>& visited, int count, int& answer)
+void BFS(
+    const string& begin, 
+    const string& target,
+    vector<string>& words,
+    map<string, bool>& visited,
+    int& answer
+)
 {
-    // 1. 종료 조건 (최단 거리도 보장할 것)
-    if (begin == target)
-    { 
-        answer = min(answer, count);
-        return;
-    }
+    queue<pair<string, int>> q;
     
-    for (auto word : words)
+    visited[begin] = true;
+    q.push(make_pair(begin, 0));
+    
+    int size = words[0].size();
+    
+    while (!q.empty())
     {
-        int match_counter = 0;
+        pair<string, int> current = q.front();
+        q.pop();
         
-        for (int i = 0; i < word.size(); i++)
+        if (current.first == target)
         {
-            if (word[i] == begin[i]) match_counter++;
+            answer = current.second;
+            return;
         }
         
-        if (match_counter == word.size() - 1 && visited[word] == false)
+        for (auto word : words)
         {
-            visited[word] = true;
-            DFS(word, target, words, visited, count+1, answer);
+            int different_count = 0;
             
-            // DFS에서는 현재 탐색 중인 경로 안에서만 같은 단어를 재방문 못하게 해야 함
-            // 즉, DFS에서는 백트래킹이 필요하다. 그러나 BFS는 필요 X (방문 거리가 항상 최단거리)
-            visited[word] = false;
+            for (int i = 0; i < size; i++)
+            {
+                if (current.first[i] != word[i]) different_count++;
+            }
+            
+            if (different_count == 1 && visited[word] == false)
+            {
+                visited[word] = true;
+                q.push(make_pair(word, current.second+1));
+            }
         }
     }
 }
 
 int solution(string begin, string target, vector<string> words) {
-    int answer = INT_MAX;
+    int answer = 0;
     map<string, bool> visited;
     
-    visited[begin] = true;
-    
-    DFS(begin, target, words, visited, 0, answer);
-    
-    if (answer == INT_MAX)
-    {
-        return 0;
-    }
+    BFS(begin, target, words, visited, answer);
     
     return answer;
 }
