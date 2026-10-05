@@ -6,26 +6,25 @@ using namespace std;
 
 string solution(vector<int> numbers) {
     string answer = "";
+    vector<string> strNumbers;
     
-    vector<string> vecString;
-    
-    for (auto num : numbers)
+    for (auto number : numbers)
     {
-        vecString.push_back(to_string(num));    
+        strNumbers.push_back(to_string(number));
     }
     
-    sort(vecString.begin(),
-         vecString.end(),
-         [](const string& a, const string& b)
-         {return a+b > b+a ;}
+    sort(
+        strNumbers.begin(), 
+        strNumbers.end(),
+        [] (string a, string b) { return a + b > b + a; }
         );
-        
-    if(vecString[0] == "0") return "0";
     
-    for (auto str : vecString)
+    for (auto strNumber : strNumbers)
     {
-        answer += str;
+        answer += strNumber;
     }
     
+    if (answer[0] == '0') return "0";
+        
     return answer;
 }
