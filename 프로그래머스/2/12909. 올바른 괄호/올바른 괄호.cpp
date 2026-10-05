@@ -3,21 +3,23 @@
 
 using namespace std;
 
-bool solution(string s)
+bool solution(string sentence)
 {
-    stack<char> parentStack;
-
-    for (char ch : s)
+    bool answer = true;
+    stack<char> cStack;
+    
+    for (auto word : sentence)
     {
-        if(ch == ')')
+        if (cStack.empty()) cStack.push(word);
+        else if (word == '(') cStack.push(word);
+        else if (word == ')')
         {
-            if(parentStack.size() == 0) return false;
-            if(parentStack.top() == '(') parentStack.pop();
+            if (cStack.top() == '(') cStack.pop();
+            else if (cStack.top() == ')') cStack.push(word);
         }
-        else
-            parentStack.push(ch);
     }
     
-    if (parentStack.size() != 0 ) return false;
-    return true;
+    if (!cStack.empty()) answer = false;
+
+    return answer;
 }
