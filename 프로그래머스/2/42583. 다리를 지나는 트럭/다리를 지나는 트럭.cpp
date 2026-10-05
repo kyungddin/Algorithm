@@ -1,49 +1,64 @@
 #include <string>
 #include <vector>
 #include <queue>
+#include <deque>
 
 using namespace std;
+
+void truck_func(
+    int bridge_length,
+    int weight,
+    int size,
+    int time,
+    int total_weights,
+    int& answer,
+    deque<pair<int, int>> bridge,
+    queue<int>& start_truck,
+    queue<int>& end_truck
+)
+{
+    if (end_truck.size() == size)
+    {
+        answer = time;
+        return;
+    }
+    
+    if (!bridge.empty() && bridge.front().second == bridge_length)
+    {
+        end_truck.push(bridge.front().first);
+        total_weights -= bridge.front().first;
+        bridge.pop_front();
+    }
+    
+    if (!start_truck.empty() && start_truck.front() + total_weights <= weight)
+    {
+        bridge.push_back(make_pair(start_truck.front(), 0));
+        total_weights += start_truck.front();
+        start_truck.pop();
+    }
+    
+    for (auto& truck : bridge)
+    {
+        truck.second++;
+    }
+    
+    truck_func(bridge_length, weight, size, time+1, total_weights, answer, bridge, start_truck, end_truck);
+}
 
 int solution(int bridge_length, int weight, vector<int> truck_weights) {
     int answer = 0;
     int size = truck_weights.size();
-    int count = 0;
-    int total_weight = 0;
-    
-    deque<int> truck_waits;
-    
-    for(auto truck : truck_weights)
-    {
-        truck_waits.push_back(truck);
-    }
     
     deque<pair<int, int>> bridge;
+    queue<int> start_truck;
+    queue<int> end_truck;
     
-    while(count != size)
+    for (auto truck : truck_weights)
     {
-        // 1. 시간올리기
-        answer++;
-        for (int i = 0 ; i < bridge.size(); i++)
-        {
-            bridge[i].second++;
-        }
-        
-        // 2. 건넜는지 체크하기
-        if (!bridge.empty() && bridge.front().second >= bridge_length)
-        {
-            total_weight -= bridge.front().first;
-            bridge.pop_front();
-            count++;
-        }
-        
-        // 3. 새 트럭 올리기
-        if (!truck_waits.empty() && total_weight + truck_waits.front() <= weight)
-        {
-            bridge.push_back(make_pair(truck_waits.front(), 0));
-            total_weight += truck_waits.front();
-            truck_waits.pop_front();
-        }
+        start_truck.push(truck);
     }
+    
+    truck_func(bridge_length, weight, size, 0, 0, answer, bridge, start_truck, end_truck);
     
     return answer;
 }
