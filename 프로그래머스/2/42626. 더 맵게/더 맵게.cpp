@@ -6,26 +6,28 @@ using namespace std;
 
 int solution(vector<int> scoville, int K) {
     int answer = 0;
-    priority_queue<int, vector<int>, greater<int>> scoHeap;
     
-    for (auto num : scoville)
+    priority_queue<int, vector<int>, greater<int>> heap;
+    
+    for (auto score : scoville)
     {
-        scoHeap.push(num);
+        heap.push(score);
     }
     
-    while(scoHeap.top() < K)
+    while (heap.top() < K)
     {
-        if(scoHeap.size() < 2) return -1; 
-        int first, second, mixed;
-        first = scoHeap.top();
-        scoHeap.pop();
-        second = scoHeap.top();
-        scoHeap.pop();
-        
-        mixed = first + (second * 2);
-        scoHeap.push(mixed);
-        
-        answer++;
+        if (heap.size() == 1) return -1;
+        else
+        {
+            int a = heap.top();
+            heap.pop();
+            int b = heap.top();
+            heap.pop();
+
+            heap.push(a + b*2);
+
+            answer++;
+        }
     }
     
     return answer;
